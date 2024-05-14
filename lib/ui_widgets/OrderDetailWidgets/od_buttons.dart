@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class OdButtons extends StatelessWidget {
   Function() openMapDirection;
+  Function() markAsComplete;
 
-  OdButtons({required this.openMapDirection});
+
+  OdButtons({required this.openMapDirection, required this.markAsComplete});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,9 @@ class OdButtons extends StatelessWidget {
       children: [
         Container(
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              markAsComplete();
+            },
             style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 shape: RoundedRectangleBorder(

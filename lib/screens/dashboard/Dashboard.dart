@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import '../../main.dart';
-import '../../model/OrderHistoryModel.dart';
+import 'package:home_water_service_rider/screens/profile/profileScreen.dart';
+import '../../model/DriverOrdersResponse.dart';
 import '../../utils/global_functions.dart';
 import '../../utils/urls.dart';
 import 'OrderList/OrderList.dart';
@@ -19,6 +18,15 @@ class Dashboard extends StatelessWidget {
             backgroundColor: Colors.white,
             elevation: 2,
             centerTitle: true,
+            leading: IconButton(
+              icon: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image.asset(
+                  "images/logo.png",
+                ),
+              ),
+              onPressed: () => {pushName(context, ProfileScreen())},
+            ),
             title: const Text("Rides", style: TextStyle(color: Colors.black))),
         body: Container(
             height: MediaQuery.of(context).size.height,
@@ -35,9 +43,9 @@ class Dashboard extends StatelessWidget {
                             const Center(child: CircularProgressIndicator()));
                   } else {
                     return ListView.builder(
-                      itemCount: data.data?.length ??0,
+                      itemCount: data.data?.orders?.length ?? 0,
                       itemBuilder: (context, index) {
-                        return OrderList(order: data.data![index]);
+                        return OrderList(order: data.data!.orders![index]);
                       },
                     );
                   }
@@ -51,26 +59,25 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-Future<List<OrderHistoryModel>?> getAllOrders() async {
+Future<DriverOrdersResponse?>? getAllOrders() async {
   try {
     Map<String, String>? headers = {
       'Content-Type': 'application/json',
-      'Authorization': token!
+      'Authorization':
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjExMjkyNzhkYjMyNmI4M2JjMDdjY2YiLCJpYXQiOjE3MTU1NzQyMDMsImV4cCI6MTcxNjE3OTAwM30.h3m7YQYlWu9wcffcYMPAga5vE_9J7BTuprtGXXvM0QY'
     };
     var request = http.get(Uri.parse(Url.allOrders), headers: headers);
 
     var response = await request;
     if (response.statusCode == 200) {
       print(response.body);
-      var jsonResponse = jsonDecode(response.body);
-      List<OrderHistoryModel> orderHistory = [];
-      for (var item in jsonResponse) {
-        orderHistory.add(OrderHistoryModel.fromJson(item));
-      }
 
-      return orderHistory;
+      var driverOrders =
+          DriverOrdersResponse.fromJson(jsonDecode(response.body));
+      return driverOrders;
     } else {
       showToast("Something went wrong");
+      return null;
     }
   } catch (e) {
     showToast('Error: $e');

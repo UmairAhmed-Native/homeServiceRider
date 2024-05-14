@@ -2,8 +2,8 @@ import 'ProductsId.dart';
 import 'UserId.dart';
 import 'Driver.dart';
 
-class OrderHistoryModel {
-  OrderHistoryModel({
+class Orders {
+  Orders({
       this.id, 
       this.productsId, 
       this.payment, 
@@ -12,13 +12,13 @@ class OrderHistoryModel {
       this.status, 
       this.lat, 
       this.long, 
-      this.driver, 
+      this.driverId,
       this.createdAt, 
       this.updatedAt, 
       this.orderId, 
       this.v,});
 
-  OrderHistoryModel.fromJson(dynamic json) {
+  Orders.fromJson(dynamic json) {
     id = json['_id'];
     if (json['productsId'] != null) {
       productsId = [];
@@ -32,7 +32,7 @@ class OrderHistoryModel {
     status = json['status'];
     lat = json['lat'];
     long = json['long'];
-    driver = json['driver'] != null ? Driver.fromJson(json['driver']) : null;
+    driverId = json['driver'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     orderId = json['orderId'];
@@ -46,7 +46,7 @@ class OrderHistoryModel {
   String? status;
   String? lat;
   String? long;
-  Driver? driver;
+  String? driverId;
   String? createdAt;
   String? updatedAt;
   num? orderId;
@@ -66,9 +66,7 @@ class OrderHistoryModel {
     map['status'] = status;
     map['lat'] = lat;
     map['long'] = long;
-    if (driver != null) {
-      map['driver'] = driver?.toJson();
-    }
+      map['driver'] = driverId;
     map['createdAt'] = createdAt;
     map['updatedAt'] = updatedAt;
     map['orderId'] = orderId;

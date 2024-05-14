@@ -199,9 +199,9 @@ class _LoginScreenState extends State<LoginScreen> {
           isLoading = false;
         });
 
-        var product = LoginResponse.fromJson(jsonDecode(response.body));
+        var loginResponse = LoginResponse.fromJson(jsonDecode(response.body));
 
-        return product;
+        return loginResponse;
       } else {
         setState(() {
           isLoading = false;

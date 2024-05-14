@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:home_water_service_rider/model/OrderHistoryModel.dart';
+import 'package:home_water_service_rider/model/Orders.dart';
 import 'package:home_water_service_rider/ui_widgets/delivery_detail/od_headings.dart';
 
 
 class OdDeliveryHeader extends StatelessWidget{
-  final OrderHistoryModel orderDetail;
+  final Orders orderDetail;
 
   const OdDeliveryHeader({super.key,required this.orderDetail});
   @override

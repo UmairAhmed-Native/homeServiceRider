@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:home_water_service_rider/model/OrderHistoryModel.dart';
+import 'package:home_water_service_rider/model/Orders.dart';
 import 'package:home_water_service_rider/ui_widgets/delivery_detail/od_delivery_details.dart';
 import 'package:home_water_service_rider/ui_widgets/delivery_detail/od_delivery_header.dart';
 
+import '../../model/ProductsId.dart';
 import '../../utils/text_styles.dart';
 import 'od_buttons.dart';
 
-Widget OdBody(BuildContext context,
-    OrderHistoryModel orderDetail,
-    Function openMapDirection) => Positioned(
+Widget OdBody(BuildContext context, Orders orderDetail, openMapDirection,markAsComplete) =>
+    Positioned(
       top: 120,
       child: Container(
         padding: EdgeInsets.only(
@@ -27,7 +27,7 @@ Widget OdBody(BuildContext context,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (orderDetail.id != null)
+              if (orderDetail.userId?.id != null)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +39,7 @@ Widget OdBody(BuildContext context,
                         size: 22,
                       ),
                     ),
-                    Text("${orderDetail.orderId}",
+                    Text("${orderDetail.userId?.id}",
                         style: boldTextStyle(
                           color: Colors.black,
                           size: 18,
@@ -52,7 +52,7 @@ Widget OdBody(BuildContext context,
                 indent: 10,
                 endIndent: 10,
               ),
-              if (orderDetail.driver?.name != null)
+              if (orderDetail.userId?.id != null)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,14 +62,14 @@ Widget OdBody(BuildContext context,
                           color: Colors.black,
                           size: 12,
                         )),
-                    Text("${orderDetail.driver?.name}",
+                    Text("${orderDetail.userId?.id}",
                         style: secondaryTextStyle(
                           color: Colors.black,
                           size: 12,
                         ))
                   ],
                 ),
-              if (orderDetail.driver?.phone != null)
+              if (orderDetail.userId?.phone != null)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,7 +79,7 @@ Widget OdBody(BuildContext context,
                           color: Colors.black,
                           size: 12,
                         )),
-                    Text("${orderDetail.driver?.phone}",
+                    Text("${orderDetail.userId?.phone}",
                         style: secondaryTextStyle(
                           color: Colors.black,
                           size: 12,
@@ -93,14 +93,16 @@ Widget OdBody(BuildContext context,
                 endIndent: 0,
               ),
               OdDeliveryHeader(orderDetail: orderDetail),
-              OdDeliveryDetails(orderDetail: orderDetail),
+              OdDeliveryDetails(productList: orderDetail.productsId ?? []),
               const Divider(
                 color: Colors.black,
                 thickness: 2,
                 indent: 0,
                 endIndent: 0,
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,19 +114,36 @@ Widget OdBody(BuildContext context,
                       size: 22,
                     ),
                   ),
-                  Text("${orderDetail.payment}",
+                  Text("${_getTotalAmount(orderDetail.productsId ?? [])}",
                       style: boldTextStyle(
                         color: Colors.black,
                         size: 18,
                       ))
                 ],
               ),
-              SizedBox(height: 20,),
-              OdButtons(openMapDirection: () {
-                openMapDirection();
-              },)
+              SizedBox(
+                height: 20,
+              ),
+              OdButtons(
+                openMapDirection: () {
+                  openMapDirection(orderDetail);
+                },
+                markAsComplete: () {
+                  markAsComplete(orderDetail.id);
+                },
+              )
             ],
           ),
         ),
       ),
     );
+
+
+
+num _getTotalAmount(List<ProductsId> products) {
+  num totalPayment = 0;
+  for (var product in products ?? []) {
+    totalPayment += product?.price ?? 0;
+  }
+  return totalPayment;
+}
