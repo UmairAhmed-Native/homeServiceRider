@@ -21,9 +21,7 @@ class Dashboard extends StatelessWidget {
             leading: IconButton(
               icon: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Image.asset(
-                  "images/logo.png",
-                ),
+                child: Icon(Icons.person_pin),
               ),
               onPressed: () => {pushName(context, ProfileScreen())},
             ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:home_water_service_rider/model/Orders.dart';
 import 'package:home_water_service_rider/ui_widgets/delivery_detail/od_delivery_details.dart';
@@ -13,8 +14,8 @@ Widget OdBody(BuildContext context, Orders orderDetail, openMapDirection,markAsC
       child: Container(
         padding: EdgeInsets.only(
             top: 10,
-            left: 5,
-            right: 5,
+            left: 20,
+            right: 20,
             bottom: MediaQuery.of(context).viewInsets.bottom),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -32,17 +33,22 @@ Widget OdBody(BuildContext context, Orders orderDetail, openMapDirection,markAsC
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Customer ID: ",
-                      style: boldTextStyle(
-                        color: Colors.black,
-                        size: 22,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "Customer ID: ",
+                          style: boldTextStyle(
+                            color: Colors.black,
+                            size: 15,
+                          ),
+                        ),
                       ),
                     ),
                     Text("${orderDetail.userId?.id}",
                         style: boldTextStyle(
                           color: Colors.black,
-                          size: 18,
+                          size: 17,
                         ))
                   ],
                 ),

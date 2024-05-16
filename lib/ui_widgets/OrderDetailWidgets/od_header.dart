@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_water_service_rider/screens/dashboard/Dashboard.dart';
+import 'package:home_water_service_rider/utils/Commons.dart';
+import 'package:home_water_service_rider/utils/Widget_extensions.dart';
 
 class OdHeader extends StatelessWidget {
   const OdHeader({super.key});
@@ -13,13 +17,18 @@ class OdHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 50,
-            height: 50,
-            padding: const EdgeInsets.only(top:20,left: 15.0),
-            child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.arrow_back)
+          GestureDetector(
+            onTap: (){
+            Dashboard().launch(context,isNewTask: true);
+            },
+            child: Container(
+              width: 50,
+              height: 50,
+              padding: const EdgeInsets.only(top:20,left: 15.0),
+              child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.arrow_back)
+              ),
             ),
           ),
           Expanded(

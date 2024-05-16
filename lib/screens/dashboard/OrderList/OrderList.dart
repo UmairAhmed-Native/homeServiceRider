@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_water_service_rider/model/DriverOrdersResponse.dart';
 import 'package:home_water_service_rider/model/Orders.dart';
+import 'package:home_water_service_rider/utils/Widget_extensions.dart';
 import 'package:home_water_service_rider/utils/shared_preference/SharePreferece.dart';
 import 'package:home_water_service_rider/utils/urls.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +42,7 @@ class _OrderListState extends State<OrderList> {
       children: [
         Stack(
           children: [
-            if (widget.order.status != "Completed") ...[
+            if (widget.order.status != "Delivered") ...[
               startJobContainerView(context, isLoading)
             ],
             jobContainerView(context, widget.order),
@@ -251,7 +252,8 @@ class _OrderListState extends State<OrderList> {
   Future<void> onStartPress(BuildContext context, Orders jobDetail) async {
     var response = await _startOrder(jobDetail.id ?? "");
     if (response) {
-      pushName(context, OrderDetail(orderId: jobDetail.id ?? ""));
+      OrderDetail(orderId: jobDetail.id ?? "").launch(context,isNewTask: true);
+
     }
   }
 
@@ -269,14 +271,14 @@ class _OrderListState extends State<OrderList> {
 
       var request = http.put(Uri.parse("${Url.updateOrder}$id"),
           body: jsonEncode(<String, String>{
-            "status": "Start",
+            "status": "Processing",
           }),
           headers: headers);
 
       var response = await request;
       if (response.statusCode == 200) {
         print("Order Update${response.body}");
-        SharedPreferencesManager.setOrderStatus("Start");
+        SharedPreferencesManager.setOrderStatus("Processing");
         SharedPreferencesManager.setOrderId(id);
         setState(() {
           isLoading = false;

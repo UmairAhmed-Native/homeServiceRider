@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   Widget _navigateHandler() {
     if (user != null) {
       if (user?.email != null) {
-        if (orderStatus == "Start") {
+        if (orderStatus == "Processing") {
           return OrderDetail(orderId: orderId);
         } else {
           return Dashboard();

@@ -38,7 +38,7 @@ class _OrderDetailState extends State<OrderDetail> {
   void initState() {
     super.initState();
     isLoading = false;
-    timer = Timer.periodic(const Duration(seconds: 15),
+    timer = Timer.periodic(const Duration(minutes: 5),
         (Timer t) => _updateDriverLocation(driverId));
   }
 
@@ -98,7 +98,7 @@ class _OrderDetailState extends State<OrderDetail> {
       };
       var request = http.put(Uri.parse(Url.updateOrder + id),
           body: jsonEncode(<String, String>{
-            "status": "Completed",
+            "status": "Delivered",
           }),
           headers: headers);
 
@@ -108,7 +108,7 @@ class _OrderDetailState extends State<OrderDetail> {
           isLoading = false;
         });
         print("Order Update${response.body}");
-        SharedPreferencesManager.setOrderStatus("Completed");
+        SharedPreferencesManager.setOrderStatus("Delivered");
         SharedPreferencesManager.setOrderId("");
 
         return true;
